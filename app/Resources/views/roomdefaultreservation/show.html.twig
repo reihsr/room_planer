@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1>Roomdefaultreservation</h1>
+
+        <table>
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ roomDefaultReservation.id }}</td>
+                </tr>
+                <tr>
+                    <th>Day</th>
+                    <td>{{ roomDefaultReservation.day }}</td>
+                </tr>
+                <tr>
+                    <th>Starttime</th>
+                    <td>{{ roomDefaultReservation.starttime }}</td>
+                </tr>
+                <tr>
+                    <th>Endtime</th>
+                    <td>{{ roomDefaultReservation.endtime }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul>
+            <li>
+                <a href="{{ path('roomdefaultreservation_index') }}">Back to the list</a>
+            </li>
+            <li>
+                <a href="{{ path('roomdefaultreservation_edit', { 'id': roomDefaultReservation.id }) }}">Edit</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                    <input type="submit" value="Delete">
+                {{ form_end(delete_form) }}
+            </li>
+        </ul>
+    </div><!-- <div class="container"> -->
+{% endblock %}
