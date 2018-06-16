@@ -10,4 +10,5 @@ Oficial Wensite: https://symfony.com/doc/current/setup.html
 php bin/console server:run
 
 #Symfony Development commands
-Create Controller: php bin/console make:controller
+Create Controller: php bin/console make:controller \
+Create DB entity: php bin/console make:entity
