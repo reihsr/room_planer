@@ -12,6 +12,7 @@ class DefaultController extends Controller
      */
     public function index()
     {
+        $logger->info("DefaultController!");
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
         ]);

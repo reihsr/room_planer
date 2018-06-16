@@ -8,3 +8,6 @@ Oficial Wensite: https://symfony.com/doc/current/setup.html
 ##Run Dev Server
 
 php bin/console server:run
+
+#Symfony Development commands
+Create Controller: php bin/console make:controller
