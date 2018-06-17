@@ -19,11 +19,6 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $userId;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $username;
@@ -52,18 +47,6 @@ class User implements UserInterface, \Serializable
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
     }
 
     public function getUsername(): ?string
@@ -146,7 +129,7 @@ class User implements UserInterface, \Serializable
         return serialize(array(
             $this->id,
             $this->username,
-            $this->password,
+            $this->plainPassword,
             $this->isActive
             // see section on salt below
             // $this->salt,
@@ -159,7 +142,7 @@ class User implements UserInterface, \Serializable
         list (
             $this->id,
             $this->username,
-            $this->password,
+            $this->plainPassword,
             $this->isActive
             // see section on salt below
             // $this->salt
