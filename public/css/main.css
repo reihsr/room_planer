@@ -1,0 +1,11 @@
+.navbar-brand {
+    padding: 0 15px;
+}
+
+.icon-success {
+    color: #5CB85C;
+}
+
+.icon-error {
+    color: red;
+}
