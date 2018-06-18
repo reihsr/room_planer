@@ -23,7 +23,7 @@ class Room
     private $roomName;
 
     /**
-     * @ORM\Column(type="string", length=1000, nullable=true)
+     * @ORM\Column(type="string", length=1000)
      */
     private $description;
 

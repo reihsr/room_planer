@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.isActive) }}
+
+        <button type="submit">Register!</button>
+    {{ form_end(form) }}
+
+{% endblock %}

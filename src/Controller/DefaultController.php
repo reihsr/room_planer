@@ -10,17 +10,6 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("/", name="home")
-     */
-    public function indexHomeAction(LoggerInterface $logger)
-    {
-        $logger->info("DefaultController!");
-        return $this->render('default/main.html.twig', [
-            'controller_name' => 'DefaultController',
-        ]);
-    }
-
-    /**
      * @Route("/default", name="default")
      */
     public function index(LoggerInterface $logger)
@@ -28,6 +17,15 @@ class DefaultController extends Controller
         $logger->info("DefaultController!");
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
+        ]);
+    }
+
+    /**
+     * @Route("/datenschutzerklaerung", name="datenschutzerklaerung")
+     */
+    public function indexDatenschutzerklaerung()
+    {
+        return $this->render('default/datenschutzerklaerung.html.twig', [
         ]);
     }
 }

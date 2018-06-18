@@ -2,31 +2,134 @@
 
 {% block body %}
 
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <style>
 
-    <form action="{{ path('login') }}" method="post">
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+        /*
+over-ride "Weak" message, show font in dark grey
+*/
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" />
+        .progress-bar {
+            color: #333;
+        }
 
-        {#
-        https://symfony.com/doc/current/security/remember_me.html
-        #}
-        <input type="checkbox" id="remember_me" name="_remember_me" checked />
-        <label for="remember_me">Keep me logged in</label>
+        /*
+        Reference:
+        http://www.bootstrapzen.com/item/135/simple-login-form-logo/
+        */
 
-        {#
-            If you want to control the URL the user
-            is redirected to on success (more details below)
-            <input type="hidden" name="_target_path" value="/account" />
-        #}
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            outline: none;
+        }
 
-        <button type="submit">login</button>
-    </form>
+        .form-control {
+            position: relative;
+            font-size: 16px;
+            height: auto;
+            padding: 10px;
+        @include box-sizing(border-box);
+
+        &:focus {
+             z-index: 2;
+         }
+        }
+
+        body {
+            background: url(http://i.imgur.com/GHr12sH.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .login-form {
+            margin-top: 60px;
+        }
+
+        form[role=login] {
+            color: #5d5d5d;
+            background: #fffefc;
+            padding: 26px;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+        }
+        form[role=login] img {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 35px;
+        }
+        form[role=login] input,
+        form[role=login] button {
+            font-size: 18px;
+            margin: 16px 0;
+        }
+        form[role=login] > div {
+            text-align: center;
+        }
+
+        .form-links {
+            text-align: center;
+            margin-top: 1em;
+            margin-bottom: 50px;
+        }
+        .form-links a {
+            color: #fff;
+        }
+
+    </style>
+
+
+    <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+            <section class="login-form">
+
+                <form action="{{ path('login') }}" method="post" role="login">
+
+                    <img src="{{ asset('images/logo.jpg') }}" class="img-responsive" alt="" />
+
+                    {% if error %}
+                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
+
+                    <label for="username">Username:</label>
+                    <input required class="form-control input-lg" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Username" />
+
+                    <label for="password">Password:</label>
+                    <input class="form-control input-lg" placeholder="Password" required="" type="password" id="password" name="_password" />
+                    <div class="pwstrength_viewport_progress"></div>
+
+                    {#
+                    https://symfony.com/doc/current/security/remember_me.html
+                    #}
+                    <input type="checkbox" id="remember_me" name="_remember_me" checked />
+                    <label for="remember_me">Keep me logged in</label>
+
+                    {#
+                        If you want to control the URL the user
+                        is redirected to on success (more details below)
+                        <input type="hidden" name="_target_path" value="/account" />
+                    #}
+
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">Einloggen</button>
+                </form>
+
+                <div class="form-links">
+                    <a href="mailto:robert.reihs@gmail.com">Für Fragen!!</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-4"></div>
+
+    </div>
+
+
 
 {% endblock %}

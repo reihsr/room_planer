@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\UserType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use App\Entity\User;
 use Psr\Log\LoggerInterface;
 
@@ -20,6 +22,28 @@ class SecurityController extends Controller
      * @return String
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        $request = $request;
+
+        return $this->render('security/login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
+    }
+
+    /**
+     * @Route("/", name="logindefault")
+     * @param Request $request
+     * @param AuthenticationUtils $authenticationUtils
+     * @return String
+     */
+    public function loginDefault(Request $request, AuthenticationUtils $authenticationUtils)
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

@@ -21,7 +21,10 @@
 
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {{ include('navigation.html.twig') }}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

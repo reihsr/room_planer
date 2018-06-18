@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Room;
+use Psr\Log\LoggerInterface;
 
 class RoomController extends Controller
 {
@@ -25,9 +26,9 @@ class RoomController extends Controller
     }
 
     /**
-     * @Route("/rr/newroom", name="newroom")
+     * @Route("/admin/newroom", name="newroom")
      */
-    public function addRoom(Request $request)
+    public function addRoom(Request $request, LoggerInterface $logger)
     {
         $room = new Room();
         $form = $this->createFormBuilder($room)
