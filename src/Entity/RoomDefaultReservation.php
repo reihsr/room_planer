@@ -17,20 +17,16 @@ class RoomDefaultReservation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="roomdefaultreservations")
-     * @ORM\JoinTable(name="room_default_reservation_user",
-     *      joinColumns={@ORM\JoinColumn(name="userId", referencedColumnName="id")}
+     * @ORM\Column(type="integer", nullable=false)
      * )
      */
-    protected $user;
+    protected $userId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="roomdefaultreservations")
-     * @ORM\JoinTable(name="room_default_reservation_room",
-     *      joinColumns={@ORM\JoinColumn(name="roomId", referencedColumnName="id")}
+     * @ORM\Column(type="integer", nullable=false)
      * )
      */
-    protected $room;
+    protected $roomId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -86,5 +82,37 @@ class RoomDefaultReservation
         $this->endTime = $endTime;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoomId()
+    {
+        return $this->roomId;
+    }
+
+    /**
+     * @param mixed $roomId
+     */
+    public function setRoomId($roomId): void
+    {
+        $this->roomId = $roomId;
     }
 }

@@ -6,18 +6,51 @@
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
+        body {
+            background: url({{ asset('images/bg.png') }}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .mycontent {
+            color: #5d5d5d;
+            background: #fffefc;
+            padding: 26px;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+        }
     </style>
 
-    <div class="container">
+    <div class="container mycontent">
         <a class="btn btn-primary" href="/admin/newroom" role="button">Raum Hinzufügen</a>
 
         <h1>Liste aller Räume</h1>
 
-        <div class="example-wrapper">
-            {% for room in rooms %}
-                {{ room.roomName }}
-                {{ room.description }}
-            {% endfor %}
-        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Beschreibung</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                    <tr>
+                        <th scope="row">{{ room.id }}</th>
+                        <th scope="row">{{ room.roomName }}</th>
+                        <th scope="row">{{ room.description }}</th>
+                        <th scope="row"><a href="{{ path('editroom', { 'id': room.id }) }}">Edit</a></th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a class="btn btn-primary" href="/admin/newroom" role="button">Raum Hinzufügen</a>
     </div>
 {% endblock %}

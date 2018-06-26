@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Neuen Raum erstellen{% endblock %}
+{% block title %}Neue Reservierung erstellen{% endblock %}
 
 {% block body %}
 <style>
@@ -81,25 +81,38 @@
     .form-links a {
         color: #fff;
     }
-
 </style>
-
     <div class="row" id="pwd-container">
         <div class="col-md-4"></div>
 
         <div class="col-md-4">
 
-            <h1>Neuen Raum erstellen</h1>
+            <h1>Neue Reservierungsvorlage erstellen</h1>
 
             {{ form_start(form, {'attr': {'role': 'edit'}}) }}
                 <div class="form-group">
-                    {{ form_row(form.roomName, { 'label': 'Raum Name:  ' }) }}
+                    {{ form_label(form.user) }}
+                    {{ form_errors(form.user) }}
+                    {{ form_widget(form.user) }}
+                    {{ form_help(form.user) }}
                 </div>
                 <div class="form-group">
-                    {{ form_row(form.description, { 'label': 'Beschreibung:  ' }) }}
+                    {{ form_row(form.room, { 'label': 'Raum:  ' }) }}
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Raum Hinzufügen</button>
+                <div class="form-group">
+                    {{ form_row(form.dayOfTheWeek, { 'label': 'Tag:  ' }) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_row(form.startTime, { 'label': 'Start Zeit:  ' }) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_row(form.endTime, { 'label': 'Zeit Ende:  ' }) }}
+                </div>
+
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Vorlage erstellen</button>
             {{ form_end(form) }}
         </div>
     </div>

@@ -12,12 +12,12 @@
         {% elseif current_path == "dashboard" %}
             {% set nav_item_active = 20 %}
         {% elseif current_path == "rooms" %}
-            {% set nav_item_active = 30 %}
+            {% set nav_item_active = 56 %}
         {% elseif current_path == "roomreservation" %}
             {% set nav_item_active = 40 %}
         {% elseif current_path == "admin" %}
             {% set nav_item_active = 50 %}
-        {% elseif current_path == "roomreservationlist" %}
+        {% elseif current_path == "room_default_reservation" %}
             {% set nav_item_active = 51 %}
         {% elseif current_path == "roomreservationapproval" %}
             {% set nav_item_active = 52 %}
@@ -25,7 +25,7 @@
             {% set nav_item_active = 53 %}
         {% elseif current_path == "newroom" %}
             {% set nav_item_active = 54 %}
-        {% elseif current_path == "addroomdefaultreservation" %}
+        {% elseif current_path == "add_room_default_reservation" %}
             {% set nav_item_active = 55 %}
         {% elseif current_path == "datenschutzerklaerung" %}
             {% set nav_item_active = 60 %}
@@ -49,17 +49,23 @@
             <ul class="nav navbar-nav">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li {% if nav_item_active == 20 %}class="active"{% endif %}><a href="/dashboard">Dashboard <span class="sr-only">(current)</span></a></li>
-                    <li {% if nav_item_active == 30 %}class="active"{% endif %}><a href="/rooms">Rooms <span class="sr-only">(current)</span></a></li>
+
                     <li id="roomreservation"><a href="/roomreservation">Room Reservation</a></li>
                     <li {% if (nav_item_active/10)|round(0, 'floor') == 5 %}class="active"{% endif %} id="admin" class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li id="roomreservationlist"><a href="/roomreservation/list">Room Reservation List</a></li>
+                            <li {% if nav_item_active == 51 %}class="active"{% endif %} id="roomreservationlist"><a href="/admin/templateroomreservation">Raum Reservierungs Liste</a></li>
                             <li id="roomreservationapprovelist"><a href="/roomreservation/listapprove">Room Reservation Approval</a></li>
+
+                            <!-- Neu Subteil -->
+                            <li {% if nav_item_active == 54 %}class="active"{% endif %}><a href="/admin/newroom">Neuen Raum erstellen</a></li>
+                            <li {% if nav_item_active == 55 %}class="active"{% endif %}><a href="/admin/addtemplateroomreservation/">Reservierungs Vorlage erstellen</a></li>
+
                             <li role="separator" class="divider"></li>
                             <li><a href="/register">Add User</a></li>
-                            <li {% if nav_item_active == 54 %}class="active"{% endif %}><a href="/admin/newroom">Neuen Raum erstellen</a></li>
-                            <li><a href="/roomdefaultreservation/">Add Room Default Reservation</a></li>
+
+                            <!-- Neu Subteil -->
+                            <li {% if nav_item_active == 56 %}class="active"{% endif %}><a href="/rooms">Räume</a></li>
 
                         </ul>
                     </li>

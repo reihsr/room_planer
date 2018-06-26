@@ -38,15 +38,41 @@ class RoomController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($room);
-            $em->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($room);
+            $entityManager->flush();
 
             return $this->redirectToRoute('rooms');
         }
 
         return $this->render('room/new.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/editroom/{id}", name="editroom")
+     */
+    public function editRoom($id, Request $request, LoggerInterface $logger)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $room = $entityManager->getRepository(Room::class)->find($id);
+        $form = $this->createFormBuilder($room)
+            ->add('roomName', TextType::class)
+            ->add('description', TextType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($room);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('rooms');
+        }
+
+        return $this->render('room/edit.html.twig', [
+            'form' => $form->createView(),
+            'room' => $room
         ]);
     }
 }

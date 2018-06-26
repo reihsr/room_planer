@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Neuen Raum erstellen{% endblock %}
+{% block title %}Raum {{ room.roomName }} bearbeiten{% endblock %}
 
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 
-    /*
+         /*
      over-ride "Weak" message, show font in dark grey
      */
 
-    .progress-bar {
-        color: #333;
-    }
+     .progress-bar {
+         color: #333;
+     }
 
     /*
     Reference:
@@ -89,7 +89,7 @@
 
         <div class="col-md-4">
 
-            <h1>Neuen Raum erstellen</h1>
+            <h1>Raum {{ room.roomName }} bearbeiten</h1><br>
 
             {{ form_start(form, {'attr': {'role': 'edit'}}) }}
                 <div class="form-group">
@@ -99,7 +99,7 @@
                     {{ form_row(form.description, { 'label': 'Beschreibung:  ' }) }}
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Raum Hinzufügen</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Änderungen Speichern</button>
             {{ form_end(form) }}
         </div>
     </div>
