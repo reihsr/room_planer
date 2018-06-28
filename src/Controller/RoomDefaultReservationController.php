@@ -14,6 +14,7 @@ use App\Entity\User;
 use App\Entity\UserExtension;
 use Psr\Log\LoggerInterface;
 use App\Form\RoomDefaultReservationType;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class RoomDefaultReservationController extends Controller
 {
@@ -25,21 +26,44 @@ class RoomDefaultReservationController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         $roomDefaultReservations = $entityManager->getRepository(RoomDefaultReservation::class)->findAll();
-        $rooms = $entityManager->getRepository(Room::class)->findAll();
-        $users = $entityManager->getRepository(User::class)->findAll();
+        $rooms_tmp = $entityManager->getRepository(Room::class)->findAll();
+        $rooms = array();
+        foreach ($rooms_tmp as $room) {
+            $rooms[$room->getId()] = $room;
+        }
+        $users_tmp = $entityManager->getRepository(User::class)->findAll();
+        $users = array();
+        $user_reservations = array();
+        foreach ($users_tmp as $user) {
+            $users[$user->getId()] = $user;
+            $user_reservations[$user->getId()] = array();
+        }
+        $usersex_tmp = $entityManager->getRepository(UserExtension::class)->findAll();
+        $usersex = array();
+        foreach ($usersex_tmp as $userex) {
+            $usersex[$userex->getUsername()] = $userex;
+        }
+        foreach ($roomDefaultReservations as $roomDefaultReservation) {
+            $user_reservations[$roomDefaultReservation->getUserId()][$roomDefaultReservation->getId()] = $roomDefaultReservation;
+        }
+
+
+
 
         return $this->render('room_default_reservation/index.html.twig', array(
             'roomDefaultReservations' => $roomDefaultReservations,
             'rooms' => $rooms,
             'users' => $users,
+            'usersex' => $usersex,
+            'user_reservations' => $user_reservations,
             'days' => array(
-                'monday' => 'Montag',
-                'tuesday' => 'Dienstag',
-                'wednesday' => 'Mittwoch',
-                'thursday' => 'Donnerstag',
-                'friday' => 'Freitag',
-                'saturday' => 'Samstag',
-                'sunday' => 'Sonntag'
+                'Montag'=>'Montag',
+                'Dienstag'=>'Dienstag',
+                'Mittwoch'=>'Mittwoch',
+                'Donnerstag'=>'Donnerstag',
+                'Freitag'=>'Freitag',
+                'Samstag'=>'Samstag',
+                'Sonntag'=>'Sonntag'
             )
         ));
     }
@@ -49,7 +73,6 @@ class RoomDefaultReservationController extends Controller
      */
     public function addTemplateReservation(Request $request, LoggerInterface $logger)
     {
-        $em = $this->getDoctrine()->getManager();
         $roomDefaultReservations = new RoomDefaultReservation();
 
         $form = $this->createForm(RoomDefaultReservationType::class);
@@ -74,18 +97,24 @@ class RoomDefaultReservationController extends Controller
     }
 
     /**
-     * @Route("/admin/edittemplateroomreservation", name="edit_room_default_reservation")
+     * @Route("/admin/edittemplateroomreservation/{id}", name="edit_room_default_reservation")
      */
-    public function editTemplateReservation(Request $request, LoggerInterface $logger)
+    public function editTemplateReservation($id, Request $request, LoggerInterface $logger)
     {
-        $em = $this->getDoctrine()->getManager();
-        $roomDefaultReservations = new RoomDefaultReservation();
+        $entityManager = $this->getDoctrine()->getManager();
+        $roomDefaultReservations = $entityManager->getRepository(RoomDefaultReservation::class)->find($id);
 
         $form = $this->createForm(RoomDefaultReservationType::class);
+        $form->get('dayOfTheWeek')->setData($roomDefaultReservations->getDayOfTheWeek());
+        $startTime = new \DateTime(substr_replace(sprintf("%04d", $roomDefaultReservations->getStartTime()), ':', 2, 0));
+        $form->get('startTime')->setData($startTime);
+        $endTime = new \DateTime(substr_replace(sprintf("%04d", $roomDefaultReservations->getEndTime()), ':', 2, 0));
+        $form->get('endTime')->setData($endTime);
+        $form->get('user')->setData($roomDefaultReservations->getUserId());
+        $form->get('room')->setData($roomDefaultReservations->getRoomId());
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $roomDefaultReservations->setDayOfTheWeek($form->get('dayOfTheWeek')->getData());
             $roomDefaultReservations->setStartTime($form->get('startTime')->getData()->format('Hi'));
             $roomDefaultReservations->setEndTime($form->get('endTime')->getData()->format('Hi'));
@@ -97,7 +126,7 @@ class RoomDefaultReservationController extends Controller
             return $this->redirectToRoute('room_default_reservation');
         }
 
-        return $this->render('room_default_reservation/new.html.twig', array(
+        return $this->render('room_default_reservation/edit.html.twig', array(
             'form' => $form->createView()
         ));
     }

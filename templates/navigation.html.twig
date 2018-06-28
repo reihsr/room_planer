@@ -54,7 +54,7 @@
                     <li {% if (nav_item_active/10)|round(0, 'floor') == 5 %}class="active"{% endif %} id="admin" class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li {% if nav_item_active == 51 %}class="active"{% endif %} id="roomreservationlist"><a href="/admin/templateroomreservation">Raum Reservierungs Liste</a></li>
+
                             <li id="roomreservationapprovelist"><a href="/roomreservation/listapprove">Room Reservation Approval</a></li>
 
                             <!-- Neu Subteil -->
@@ -66,6 +66,7 @@
 
                             <!-- Neu Subteil -->
                             <li {% if nav_item_active == 56 %}class="active"{% endif %}><a href="/rooms">Räume</a></li>
+                            <li {% if nav_item_active == 51 %}class="active"{% endif %} id="roomreservationlist"><a href="/admin/templateroomreservation">Raum Reservierungs Liste</a></li>
 
                         </ul>
                     </li>

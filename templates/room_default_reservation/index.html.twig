@@ -10,6 +10,22 @@
             z-index: 10;
             background-color: yellow;
         }
+        body {
+            background: url({{ asset('images/bg.png') }}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .mycontent {
+            color: #5d5d5d;
+            background: #fffefc;
+            padding: 26px;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+        }
     </style>
 
     <script>
@@ -27,95 +43,103 @@
             var hour = Math.floor((endtime - starttime) / 100);
             var minute = ((endtime - starttime) - (hour * 100)) / 15;
             var height = ((hour * 4) + minute) * 20;
-            $( "#" + id ).append( '<div id="roomreservation_' + reservationid + '" class="reservation" style="height: ' + height + 'px">Reservation for ' + name + '<br>' +
+            $( "#" + id ).append( '<div id="roomreservation_' + reservationid + '" class="reservation" style="height: ' + height + 'px">Reservierung für ' + name + '<br>' +
                 starttime + ' - ' + endtime + '<br>' +
                 '<a href="' + editpath  + '">Bearbeiten</a></div>' );
         }
     </script>
 
-    {{ dump(users) }}
+    <!--{{ dump(users) }}
     {{ dump(rooms) }}
     {{ dump(roomDefaultReservations) }}
     {{ dump(days) }}
+    {{ dump(usersex) }}
+    {{ dump(user_reservations) }}-->
 
-    <h1>{{ array_search(2, array_column(rooms, 'id')) }}</h1>
-
-    <div class="container">
+    <div class="container mycontent">
         <h1>Raum Reservierungs Liste (Wochen Vorlagen)</h1>
 
         <p><a class="btn btn-primary" href="{{ path('add_room_default_reservation') }}" role="button">Raum Reservierung Hinzufügen</a></p>
 
-        <div class="panel-group" id="accordion">
-            {% for daykey, day in days %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{ day }}">{{ day }}</a>
-                        </h4>
-                    </div>
-                    <div id="collapse_{{ day }}" class="panel-collapse collapse">
-                        <div class="row">
-                            <div class="col-sm-12" style="margin: 10px 0;">
-                                {% for room in rooms %}
-                                    <div class="col-sm-4" style="border-style: solid;border-width: 1px;border-color: blue; border-radius: 3px;">
-                                        <h4>{{ room.roomName }}</h4>
-                                        {% for hour in 6..23 %}
-                                            {% for minute in 0..3 %}
-                                                <div class="row" style="position: relative;">
-                                                    <div class="col-sm-4">
-                                                        {{ hour }}:{{ "%02d"|format(minute * 15) }}
-                                                    </div>
-                                                    <div class="col-sm-8" id="{{ daykey }}-{{ room.id }}-{{ "%02d"|format(hour) }}{{ "%02d"|format(minute * 15) }}">
-                                                        &nbsp;
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Wochen Übersicht</a></li>
+            <li><a data-toggle="tab" href="#menu1">Benutzer Übersicht</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <div class="panel-group" id="accordion">
+                    {% for daykey, day in days %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{ day }}">{{ day }}</a>
+                                </h4>
+                            </div>
+                            <div id="collapse_{{ day }}" class="panel-collapse collapse">
+                                <div class="row">
+                                    <div class="col-sm-12" style="margin: 10px 0;">
+                                        {% for room in rooms %}
+                                            <div class="col-sm-4" style="border-style: solid;border-width: 1px;border-color: blue; border-radius: 3px;">
+                                                <h4>{{ room.roomName }}</h4>
+                                                {% for hour in 6..23 %}
+                                                    {% for minute in 0..3 %}
+                                                        <div class="row" style="position: relative;">
+                                                            <div class="col-sm-4">
+                                                                {{ hour }}:{{ "%02d"|format(minute * 15) }}
+                                                            </div>
+                                                            <div class="col-sm-8" id="{{ daykey }}-{{ room.id }}-{{ "%02d"|format(hour) }}{{ "%02d"|format(minute * 15) }}">
+                                                                &nbsp;
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </div>
                                         {% endfor %}
                                     </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div> <!-- <div id="collapse_day" class="panel-collapse collapse in"> -->
+                                </div>
+                            </div> <!-- <div id="collapse_day" class="panel-collapse collapse in"> -->
+                        </div> <!-- <div class="panel-group" id="accordion"> -->
+                    {% endfor %}
                 </div> <!-- <div class="panel-group" id="accordion"> -->
-            {% endfor %}
-        </div> <!-- <div class="panel-group" id="accordion"> -->
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                {% for user_reservation_key, user_reservation in user_reservations %}
+                    <h2>{{ usersex[users[user_reservation_key].username].fullName }}</h2>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Raum</th>
+                                <th scope="col">Tag</th>
+                                <th scope="col">Start Zeit</th>
+                                <th scope="col">End Zeit</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-        <table>
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Day</th>
-                <th>Starttime</th>
-                <th>Endtime</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
+                            {% for roomDefaultReservation_key, roomDefaultReservation in user_reservation %}
+                                <tr>
+                                    <td><a href="{{ path('edit_room_default_reservation', { 'id': roomDefaultReservation.id }) }}">{{ roomDefaultReservation.id }}</a></td>
+                                    <td>{{ rooms[roomDefaultReservation.roomId].roomName }}</td>
+                                    <td>{{ roomDefaultReservation.dayOfTheWeek }}</td>
+                                    <td>{{ "%04d"|format(roomDefaultReservation.starttime) }}</td>
+                                    <td>{{ "%04d"|format(roomDefaultReservation.endtime) }}</td>
+                                    <script>drawReservation('{{ roomDefaultReservation.roomId }}', '{{ roomDefaultReservation.dayOfTheWeek }}', '{{ "%04d"|format(roomDefaultReservation.starttime) }}', '{{ "%04d"|format(roomDefaultReservation.endtime) }}', '{{ roomDefaultReservation.id }}', '{{ path("edit_room_default_reservation", { "id": roomDefaultReservation.id }) }}', '{{ usersex[users[roomDefaultReservation.userId].username].fullName }}');</script>
+                                    <td>
+                                        <a href="{{ path('edit_room_default_reservation', { 'id': roomDefaultReservation.id }) }}">bearbeiten</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endfor %}
+            </div>
+        </div>
 
-            {% for roomDefaultReservation in roomDefaultReservations %}
-                <tr>
-                    <td><a href="{{ path('edit_room_default_reservation', { 'id': roomDefaultReservation.id }) }}">{{ roomDefaultReservation.id }}</a></td>
-                    <td>{{ roomDefaultReservation.dayOfTheWeek }}</td>
-                    <td>{{ roomDefaultReservation.starttime }}</td>
-                    <td>{{ roomDefaultReservation.endtime }}</td>
-                    <script>drawReservation('{{ roomDefaultReservation.roomId }}', '{{ roomDefaultReservation.dayOfTheWeek }}', '{{ "%02d"|format(roomDefaultReservation.starttime) }}', '{{ roomDefaultReservation.endtime }}', '{{ roomDefaultReservation.id }}', '{{ path("edit_room_default_reservation", { "id": roomDefaultReservation.id }) }}', '{{ roomDefaultReservation.userId }}');</script>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="{{ path('edit_room_default_reservation', { 'id': roomDefaultReservation.id }) }}">edit</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <p><a class="btn btn-primary" href="{{ path('add_room_default_reservation') }}" role="button">Raum Reservierung Hinzufügen</a></p>
 
-        <ul>
-            <li>
-                <a href="{{ path('add_room_default_reservation') }}">Create a new roomDefaultReservation</a>
-            </li>
-        </ul>
     </div><!-- <div class="container"> -->
 
     <script>
