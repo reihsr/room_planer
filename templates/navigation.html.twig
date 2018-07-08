@@ -27,6 +27,10 @@
             {% set nav_item_active = 54 %}
         {% elseif current_path == "add_room_default_reservation" %}
             {% set nav_item_active = 55 %}
+        {% elseif current_path == "user_action" %}
+            {% set nav_item_active = 57 %}
+        {% elseif current_path == "new_user_action" %}
+            {% set nav_item_active = 58 %}
         {% elseif current_path == "datenschutzerklaerung" %}
             {% set nav_item_active = 60 %}
         {% endif %}
@@ -55,17 +59,19 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                         <ul class="dropdown-menu">
 
-                            <li id="roomreservationapprovelist"><a href="/roomreservation/listapprove">Room Reservation Approval</a></li>
+                            <li id="roomreservationapprovelist"><a href="/roomreservation/listapprove">Room Reservation Approval</a></li><!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
 
                             <!-- Neu Subteil -->
                             <li {% if nav_item_active == 54 %}class="active"{% endif %}><a href="/admin/newroom">Neuen Raum erstellen</a></li>
+                            <li {% if nav_item_active == 58 %}class="active"{% endif %}><a href="{{ path('new_user_action') }}">Benutzer hinzufügen</a></li>
                             <li {% if nav_item_active == 55 %}class="active"{% endif %}><a href="/admin/addtemplateroomreservation/">Reservierungs Vorlage erstellen</a></li>
 
                             <li role="separator" class="divider"></li>
-                            <li><a href="/register">Add User</a></li>
+
 
                             <!-- Neu Subteil -->
                             <li {% if nav_item_active == 56 %}class="active"{% endif %}><a href="/rooms">Räume</a></li>
+                            <li {% if nav_item_active == 57 %}class="active"{% endif %} id="roomreservationlist"><a href="/admin/users">Benutzer</a></li>
                             <li {% if nav_item_active == 51 %}class="active"{% endif %} id="roomreservationlist"><a href="/admin/templateroomreservation">Raum Reservierungs Liste</a></li>
 
                         </ul>

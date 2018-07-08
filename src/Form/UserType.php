@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +17,7 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username', TextType::class)
+            ->add('fullname', TextType::class)
             ->add('email', EmailType::class)
             ->add('isActive', CheckboxType::class)
             ->add('plainPassword', RepeatedType::class,
@@ -33,7 +33,6 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
             'csrf_protection' => true,
             'csrf_field_name' => '_token'
         ]);

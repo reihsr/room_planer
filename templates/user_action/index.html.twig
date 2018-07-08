@@ -1,20 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Hello!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .reservation{
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            background-color: yellow;
+        }
+        body {
+            background: url({{ asset('images/bg.png') }}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        .mycontent {
+            color: #5d5d5d;
+            background: #fffefc;
+            padding: 26px;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+        }
+    </style>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/UserActionController.php'|file_link(0) }}">src/Controller/UserActionController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/user_action/index.html.twig'|file_link(0) }}">templates/user_action/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <h1>Benutzer Liste</h1>
+
+    <div class="container mycontent">
+
+        <p><a class="btn btn-primary" href="{{ path('new_user_action') }}" role="button">Benutzer Hinzufügen</a></p>
+        {% for user_reservation_key, user_reservation in user_reservations %}
+            <h2>{{ usersex[users[user_reservation_key].username].fullName }} - {{ users[user_reservation_key].email }}</h2>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ users[user_reservation_key].username }}">Wöchentliche Reservierungsanfrage anzeigen</button>
+            <div id="{{ users[user_reservation_key].username }}" class="collapse">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Raum</th>
+                        <th scope="col">Tag</th>
+                        <th scope="col">Start Zeit</th>
+                        <th scope="col">End Zeit</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for roomDefaultReservation_key, roomDefaultReservation in user_reservation %}
+                        <tr>
+                            <td><a href="{{ path('edit_room_default_reservation', { 'id': roomDefaultReservation.id }) }}">{{ roomDefaultReservation.id }}</a></td>
+                            <td>{{ rooms[roomDefaultReservation.roomId].roomName }}</td>
+                            <td>{{ roomDefaultReservation.dayOfTheWeek }}</td>
+                            <td>{{ "%04d"|format(roomDefaultReservation.starttime) }}</td>
+                            <td>{{ "%04d"|format(roomDefaultReservation.endtime) }}</td>
+                            <script>drawReservation('{{ roomDefaultReservation.roomId }}', '{{ roomDefaultReservation.dayOfTheWeek }}', '{{ "%04d"|format(roomDefaultReservation.starttime) }}', '{{ "%04d"|format(roomDefaultReservation.endtime) }}', '{{ roomDefaultReservation.id }}', '{{ path("edit_room_default_reservation", { "id": roomDefaultReservation.id }) }}', '{{ usersex[users[roomDefaultReservation.userId].username].fullName }}');</script>
+                            <td>
+                                <a href="{{ path('edit_room_default_reservation', { 'id': roomDefaultReservation.id }) }}">bearbeiten</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+
+    </div>
 {% endblock %}
