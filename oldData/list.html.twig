@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Zeit</th>
+                    <th>Raum</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for roomReservation in roomReservations %}
+                    <tr>
+                        <th scope="row">{{ roomReservation.id }}</th>
+                        <td>{{ roomReservation.date }}</td>
+                        <td>{{ roomReservation.startdatetime }} - {{ roomReservation.enddatetime }}</td>
+                        <td>{{ roomReservation.room.name }}</td>
+                        <td>{{ roomReservation.user.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $(".nav li").removeClass("active");  
+            $('#admin').addClass('active');                       
+            $('#roomreservationlist').addClass('active');
+        });
+    </script>
+{% endblock %}

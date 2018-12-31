@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Neue Reservierungs Vorlage erstellen{% endblock %}
+{% block title %}Neue Reservierung erstellen{% endblock %}
 
 {% block body %}
 <style>
@@ -87,7 +87,7 @@
 
         <div class="col-md-4">
 
-            <h1>Neue Reservierungsvorlage erstellen</h1>
+            <h1>Neue Reservierung erstellen</h1>
 
             {{ form_start(form, {'attr': {'role': 'edit'}}) }}
                 <div class="form-group">
@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form_row(form.dayOfTheWeek, { 'label': 'Tag:  ' }) }}
+                    {{ form_row(form.date, { 'label': 'Datum:  ' }) }}
                 </div>
 
                 <div class="form-group">
@@ -112,8 +112,18 @@
                     {{ form_row(form.endTime, { 'label': 'Zeit Ende:  ' }) }}
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Vorlage erstellen</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Reservieren</button>
             {{ form_end(form) }}
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // you may need to change this code if you are not using Bootstrap Datepicker
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+        });
+    </script>
+
 {% endblock %}

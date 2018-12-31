@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         {{ dump(app.user) }}
-        {{ dump(app) }}
+        {{ dump() }}
 
         {% set current_path = app.request.get('_route') %}
         {% set nav_item_active = 10 %}

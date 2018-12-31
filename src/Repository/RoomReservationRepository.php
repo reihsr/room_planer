@@ -47,4 +47,16 @@ class RoomReservationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllForUserWithDate($userId, $date_start, $date_end) {
+        $query_builder = $this->createQueryBuilder('r')
+                ->andWhere('r.userId = :userId')
+                ->andWhere('r.date BETWEEN :startDate AND :endDate')
+                ->setParameter('userId', $userId)
+                ->setParameter('startDate', $date_start)
+                ->setParameter('endDate', $date_end)
+                ->orderBy('r.date', 'ASC')
+                ->getQuery();
+        return $query_builder->execute();
+    }
 }

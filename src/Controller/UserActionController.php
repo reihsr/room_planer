@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Form\UserType;
+use App\Form\UserChangePasswordType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\RoomDefaultReservation;
 use App\Entity\Room;
 use App\Entity\User;
@@ -88,8 +90,13 @@ class UserActionController extends Controller
             $user->setUsername($form->get('username')->getData());
             $user->setEmail($form->get('email')->getData());
             $user->setIsActive($form->get('isActive')->getData());
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $logger->debug($form->get('plainPassword')->get('first')->getData());
+            //$user->setPlainPassword($form->get('plainPassword')->get('first')->getData());
+            $password = $passwordEncoder->encodePassword($user, $form->get('plainPassword')->get('first')->getData());
             $user->setPassword($password);
+
+            $logger->debug($form->get('plainPassword')->get('first')->getData());
+            $logger->debug($password);
 
             $entityManager->persist($user);
             $entityManager->persist($userExtension);
@@ -99,6 +106,49 @@ class UserActionController extends Controller
         }
 
         return $this->render('user_action/new.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * @Route("/profile", name="user_action_profile")
+     */
+    public function userProfile(Request $request, UserInterface $user = null, LoggerInterface $logger, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        if($user == null) {
+            return $this->render('login');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $usersex = $entityManager->getRepository(UserExtension::class)->findOneBy(['username' => $user->getUsername()]);
+
+        return $this->render('user_action/profile.html.twig', array(
+            'userext' => $usersex
+        ));
+    }
+
+    /**
+     * @Route("/changepassword", name="user_action_change_password")
+     */
+    public function userChangePassword(Request $request, UserInterface $user = null, LoggerInterface $logger, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        if($user == null) {
+            return $this->render('login');
+        }
+
+        $form = $this->createForm(UserChangePasswordType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $password = $passwordEncoder->encodePassword($user, $form->get('plainPassword')->get('first')->getData());
+            $user->setPassword($password);
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+
+        return $this->render('user_action/changepassword.html.twig', array(
             'form' => $form->createView()
         ));
     }

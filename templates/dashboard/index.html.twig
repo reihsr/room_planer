@@ -1,20 +1,132 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        body {
+            background: url({{ asset('images/bg.png') }}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/DashboardController.php'|file_link(0) }}">src/Controller/DashboardController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/dashboard/index.html.twig'|file_link(0) }}">templates/dashboard/index.html.twig</a></code></li>
-    </ul>
-</div>
+        .mycontent {
+            color: #5d5d5d;
+            background: #fffefc;
+            padding: 26px;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+        }
+        .even {
+            background: #1ab7ea;
+            margin: 1px 0 1px 0;
+            vertical-align: center;
+            border-radius: 3px;
+        }
+        .odd {
+            background: #b9def0;
+            margin: 1px 0 1px 0;
+            vertical-align: center;
+            border-radius: 3px;
+        }
+        .btn-group-sm>.btn, .btn-sm {
+            margin: 10px 0 10px 0;
+            vertical-align: center;
+        }
+        .row-vertical-center {
+            margin: 10px 0 10px 0;
+            vertical-align: center;
+        }
+        .header-bold {
+            font-weight: bold;
+        }
+    </style>
+
+    {% set rowcolor = "even" %}
+
+    <div class="container mycontent">
+        <h1>TMA Dashboard - {{ date_now }}</h1>
+
+        <div class="row odd">
+            <div class="col-md-2 col-sm-6 row-vertical-center header-bold">
+                Datum
+            </div>
+            <div class="col-md-2 col-sm-6 row-vertical-center header-bold">
+                Raum
+            </div>
+            <div class="col-md-2 col-sm-6 row-vertical-center header-bold">
+                Start Zeit
+            </div>
+            <div class="col-md-2 col-sm-6 row-vertical-center header-bold">
+                End Zeit
+            </div>
+            <div class="col-md-4 col-sm-12 row-vertical-center header-bold">
+
+            </div>
+        </div>
+
+        {% for form in form_array %}
+            {{ form_start(form) }}
+                <div class="row {{ rowcolor }}">
+                    {{ form_errors(form) }}
+                    <div style="display: none;">
+                        {{ form_row(form.user) }}
+                        {{ form_row(form.date) }}
+                    </div>
+                    <div class="col-md-1 col-sm-3 row-vertical-center">
+                        {% if 'notsaved' in form.saved.vars.value %}
+                            <span class="glyphicon glyphicon-plus-sign icon-success" style="padding: 5px; background-color: #F3F3F3; border-radius: 2px;"></span>
+                        {% else %}
+                            {% if '-1' in form.approved.vars.value %}
+                                <span class="glyphicon glyphicon-question-sign icon-warning" style="padding: 5px; background-color: #F3F3F3; border-radius: 2px;"></span>
+                            {% elseif '10' in form.approved.vars.value %}
+                                <span class="glyphicon glyphicon-ok-sign icon-success" style="padding: 5px; background-color: #F3F3F3; border-radius: 2px;"></span>
+                            {% else %}
+                                <span class="glyphicon glyphicon-remove-sign icon-danger" style="padding: 5px; background-color: #F3F3F3; border-radius: 2px;"></span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-2 col-sm-6 row-vertical-center">
+                        {{ form.date.vars.value }}
+                    </div>
+                    <div class="col-md-1 col-sm-3 row-vertical-center">
+                        {{ form_widget(form.room) }}
+                    </div>
+                    <div class="col-md-2 col-sm-6 row-vertical-center">
+                        {{ form_widget(form.startTime) }}
+                    </div>
+                    <div class="col-md-2 col-sm-6 row-vertical-center">
+                        {{ form_widget(form.endTime) }}
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        {% if 'notsaved' in form.saved.vars.value %}
+                            <button type="submit" class="btn btn-sm btn-primary btn-block">Reservieren</button>
+                        {% else %}
+                            <div class="btn-group btn-group-justified">
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-sm btn-success btn-block">Bearbeiten</button>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-sm btn-danger btn-block">Löschen</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {{ form_end(form) }}
+            {% if 'even' in rowcolor %}
+                {% set rowcolor = "odd" %}
+            {% else %}
+                {% set rowcolor = "even" %}
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
 {% endblock %}

@@ -11,15 +11,11 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class UserType extends AbstractType
+class UserChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class)
-            ->add('fullname', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('isActive', CheckboxType::class)
             ->add('plainPassword', RepeatedType::class,
                 array(
                     'type' => PasswordType::class,

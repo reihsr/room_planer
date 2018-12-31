@@ -29,7 +29,9 @@ security:
                # checkbox in the login form (see below), uncomment the
                # following line to always enable it.
                #always_remember_me: true
-
+            logout:
+               path:   app_logout
+               target: login
             # activate different ways to authenticate
 
             # http_basic: true
