@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\RoomReservation;
 use App\Entity\Room;
 use App\Entity\UserExtension;
@@ -35,6 +36,13 @@ class RoomReservationType extends AbstractType
             ->add('reservationTemplate', HiddenType::class)
             ->add('approved', HiddenType::class)
             ->add('saved', HiddenType::class)
+            ->add('reservationId', HiddenType::class)
+            ->add('reserv', SubmitType::class, array('label' => 'Reservieren',
+                'attr' => array('class' => 'btn btn-sm btn-primary btn-block')))
+            ->add('edit', SubmitType::class, array('label' => 'Bearbeiten',
+                'attr' => array('class' => 'btn btn-sm btn-success btn-block')))
+            ->add('delete', SubmitType::class, array('label' => 'Löschen',
+                'attr' => array('class' => 'btn btn-sm btn-danger btn-block')))
         ;
     }
 

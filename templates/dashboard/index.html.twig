@@ -78,6 +78,7 @@
                     <div style="display: none;">
                         {{ form_row(form.user) }}
                         {{ form_row(form.date) }}
+                        {{ form_row(form.reservationId) }}
                     </div>
                     <div class="col-md-1 col-sm-3 row-vertical-center">
                         {% if 'notsaved' in form.saved.vars.value %}
@@ -106,15 +107,22 @@
                     </div>
                     <div class="col-md-4 col-sm-12">
                         {% if 'notsaved' in form.saved.vars.value %}
-                            <button type="submit" class="btn btn-sm btn-primary btn-block">Reservieren</button>
+                            {{ form_widget(form.reserv) }}
+                            <div style="display:none;">
+                                {{ form_widget(form.edit) }}
+                                {{ form_widget(form.delete) }}
+                            </div>
                         {% else %}
                             <div class="btn-group btn-group-justified">
                                 <div class="btn-group">
-                                    <button type="submit" class="btn btn-sm btn-success btn-block">Bearbeiten</button>
+                                    {{ form_widget(form.edit) }}
                                 </div>
                                 <div class="btn-group">
-                                    <button type="submit" class="btn btn-sm btn-danger btn-block">Löschen</button>
+                                    {{ form_widget(form.delete) }}
                                 </div>
+                            </div>
+                            <div style="display:none;">
+                                {{ form_widget(form.reserv) }}
                             </div>
                         {% endif %}
                     </div>

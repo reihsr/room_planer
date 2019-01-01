@@ -29,7 +29,16 @@ class DashboardController extends Controller
 
         $form = $this->createForm(RoomReservationType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        // Delete Reservation
+        if ($form->isSubmitted() && $form->isValid() && $form->getClickedButton() && 'delete' === $form->getClickedButton()->getName()) {
+            $deleteid = $form->get('reservationId')->getData();
+            $roomReservations = $entityManager->getRepository(RoomReservation::class)->find($deleteid);
+            $entityManager->remove($roomReservations);
+            $entityManager->flush();
+        }
+
+        // Reserve data
+        if ($form->isSubmitted() && $form->isValid() && $form->getClickedButton() && 'reserv' === $form->getClickedButton()->getName()) {
             $roomReservations = new RoomReservation();
             // Set status of approval to pending (-1)
             $roomReservations->setApproved(-1);
@@ -176,6 +185,7 @@ class DashboardController extends Controller
                     $form->get('endTime')->setData($endTime);
                     $form->get('reservationTemplate')->setData($reservation_tmp->getRoomDefaultReservationId());
                     $form->get('saved')->setData('saved');
+                    $form->get('reservationId')->setData($reservation_tmp->getId());
                     $form->get('approved')->setData($reservation_tmp->getApproved());
                     $form_array[$array_counter] = $form->createView();
                     $array_counter++;
@@ -194,6 +204,7 @@ class DashboardController extends Controller
                 $form->get('endTime')->setData($endTime);
                 $form->get('reservationTemplate')->setData($reservation_template->getId());
                 $form->get('saved')->setData('notsaved');
+                $form->get('reservationId')->setData("-1");
                 $form_array[$array_counter] = $form->createView();
                 $array_counter++;
             }
